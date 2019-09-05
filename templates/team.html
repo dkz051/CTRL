@@ -1,16 +1,24 @@
 {% load staticfiles %}
 {% include 'head.html' %}
 		<div id="article-banner">
-			<h2>{{ title }}</h2>
-			<p class="post-date">{{ published_time | date:"Y年n月j日 G:i:s" }}</p>
+			<h2>{{ full_name }} ({{ full_en_name }})</h2>
 			<div class="arrow-down"><a href="javascript:;"></a></div>
 		</div>
 		<main class="app-body flex-box">
 			<!-- Article START -->
 			<article class="post-article">
 				<section class="news-entry">
-					<img src="{{ image_url }}"></img>
-					{{ content | safe }}
+					<h2>基本资料</h2>
+					<p><strong>加入 NBA</strong>：{{ joined }}</p>
+					<p><strong>赛区</strong>：{{ area }}</p>
+					<p><strong>主场</strong>：{{ arena }}</p>
+					<h2>球员</h2>
+					<ul>
+						{% for player in players %}
+						<li>{{ player.full_name }}</li>
+						{% endfor %}
+					</ul>
+					<h2>动态</h2>
 				</section>
 				<!-- Tags START -->
 				<!--div class="tags">
@@ -21,14 +29,13 @@
 				</div-->
 				<!-- Tags END -->
 				<!-- NAV START -->
-				<div class="nav-container">
-					来源：{{ source | safe }}
+				<!--div class="nav-container"-->
 					<!-- reverse left and right to put prev and next in a more logic postition -->
 					<!--a class="nav-left" href="/posts/remove-file-preview-web-learning-2018/">
 						<span class="nav-arrow">← </span>
 						屏蔽网络学堂文件预览
 					</a-->
-				</div>
+				<!--/div-->
 				<!-- NAV END -->
 			</article>
 			<!-- Article END -->

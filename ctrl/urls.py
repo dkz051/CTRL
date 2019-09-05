@@ -19,5 +19,6 @@ from database import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    re_path(r'^news/(.+)/', views.news)
+    re_path(r'^news/(.+)/', views.news),
+    re_path(r'^team/(.+)/', views.team),
 ]

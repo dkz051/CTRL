@@ -1,0 +1,80 @@
+{% load staticfiles %}
+		<script>
+			(function () {
+				var url = '{{ url }}';
+				var banner = ''
+				if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+					$('#article-banner').css({
+						'background-image': 'url(' + banner + ')'
+					})
+				} else {
+					$('#article-banner').geopattern(url)
+				}
+				$('.header').removeClass('fixed-header')
+
+				// error image
+				$("img").on('error', function () {
+					$(this).attr('src', 'http://file.muyutech.com/error-img.png')
+					$(this).css({
+						'cursor': 'default'
+					})
+				})
+
+				// zoom image
+				$("img").on('click', function () {
+					var src = $(this).attr('src')
+					if (src !== 'http://file.muyutech.com/error-img.png') {
+						var imageW = $(this).width()
+						var imageH = $(this).height()
+
+						var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+						zoom = zoom < 1 ? 1 : zoom
+						zoom = zoom > 2 ? 2 : zoom
+						var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+						$('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="' + src + '" /></div></div>')
+						$('.image-view-wrap').addClass('wrap-active')
+						$('.image-view-wrap img').css({
+							'width': `${imageW}`,
+							'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+						})
+						$('html').css('overflow', 'hidden')
+
+						$('.image-view-wrap').on('click', function () {
+							$(this).remove()
+							$('html').attr('style', '')
+						})
+					}
+				})
+			})();
+		</script>
+		<div class="scroll-top">
+			<span class="arrow-icon"></span>
+		</div>
+		<footer class="app-footer">
+			<p class="copyright">
+				&copy; 2014 - 2019 <a href="https://github.com/Chrogeek">Chrogeek</a> | 由 <a href="https://www.djangoproject.com/">Django</a> 强力驱动 | <a href="https://github.com/Chrogeek/CTRL/">网站源代码</a>
+				<br>
+				本站所有内容由自动爬网程序抓取
+			</p>
+		</footer>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+		<!--script src="/js/server-time.js"></script-->
+		<script>
+			function async(u, c) {
+				var d = document, t = 'script',
+					o = d.createElement(t),
+					s = d.getElementsByTagName(t)[0];
+				o.src = u;
+				if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+				s.parentNode.insertBefore(o, s);
+			}
+		</script>
+		<script>
+			async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function () {
+				FastClick.attach(document.body);
+			})
+		</script>
+		<script src="{% static 'script.js' %}"></script>
+	</body>
+</html>

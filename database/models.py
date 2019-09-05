@@ -11,3 +11,25 @@ class news_entry(models.Model):
     class Meta:
         app_label = 'database'
         db_table = 'news_entry'
+
+class Team(models.Model):
+    full_name = models.CharField(max_length = 512, unique = True)
+    short_name = models.CharField(max_length = 512)
+    full_en_name = models.CharField(max_length = 512)
+    joined = models.CharField(max_length = 256)
+    area = models.CharField(max_length = 1024)
+    arena = models.CharField(max_length = 1024)
+
+    class Meta:
+        app_label = 'database'
+        db_table = 'teams'
+
+class Player(models.Model):
+    first_name = models.CharField(max_length = 256)
+    last_name = models.CharField(max_length = 256)
+    full_name = models.CharField(max_length = 512)
+    team = models.ForeignKey('Team', on_delete = models.CASCADE)
+
+    class Meta:
+        app_label = 'database'
+        db_table = 'players'
