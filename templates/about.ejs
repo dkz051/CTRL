@@ -1,0 +1,102 @@
+<div id="about-banner" style="background-image: url(<%- theme.about.banner %>)"></div>
+<div class="author">
+  <div class="head">
+    <img src="<%- theme.about.avatar %>" />
+  </div>
+  <h3><%- config.author %></h3>
+  <p class="description"><%- config.description %></p>
+  <section class="social-link-icons">
+    <% if (theme.about.email) { %>
+      <a class="social-link-icon-email" href="mailto:<%- theme.about.email %>" target="_blank">
+        <span class="fa-stack fa-lg">
+          <i class="fa fa-circle fa-stack-2x"></i>
+          <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+        </span>
+      </a>
+    <% } %>
+    <% if (theme.about.qq_link) { %>
+      <a class="social-link-icon-qq" href="<%- theme.about.qq_link %>" target="_blank">
+        <span class="fa-stack fa-lg">
+          <i class="fa fa-circle fa-stack-2x"></i>
+          <i class="fa fa-qq fa-stack-1x fa-inverse"></i>
+        </span>
+      </a>
+    <% } %>
+    <% if (theme.about.wechat_link) { %>
+      <a class="social-link-icon-wechat" href="<%- theme.about.wechat_link %>" target="_blank">
+        <span class="fa-stack fa-lg">
+          <i class="fa fa-circle fa-stack-2x"></i>
+          <i class="fa fa-weixin fa-stack-1x fa-inverse"></i>
+        </span>
+      </a>
+    <% } %>
+    <% if (theme.about.weibo_link) { %>
+      <a class="social-link-icon-weibo" href="<%- theme.about.weibo_link %>" target="_blank">
+        <span class="fa-stack fa-lg">
+          <i class="fa fa-circle fa-stack-2x"></i>
+          <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+        </span>
+      </a>
+    <% } %>
+    <% if (theme.about.twitter_link) { %>
+      <a class="social-link-icon-twitter" href="<%- theme.about.twitter_link %>" target="_blank">
+        <span class="fa-stack fa-lg">
+          <i class="fa fa-circle fa-stack-2x"></i>
+          <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+        </span>
+      </a>
+    <% } %>
+    <% if (theme.about.github_link) { %>
+      <a class="social-link-icon-github" href="<%- theme.about.github_link %>" target="_blank">
+        <span class="fa-stack fa-lg">
+          <i class="fa fa-circle fa-stack-2x"></i>
+          <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+        </span>
+      </a>
+    <% } %>
+    <% if (theme.about.linkedin_link) { %>
+      <a class="social-link-icon-linkedin" href="<%- theme.about.linkedin_link %>" target="_blank">
+        <span class="fa-stack fa-lg">
+          <i class="fa fa-circle fa-stack-2x"></i>
+          <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+        </span>
+      </a>
+    <% } %>
+    <% if (theme.about.zhihu_link) { %>
+      <a class="social-link-icon-zhihu" href="<%- theme.about.zhihu_link %>" target="_blank">
+        <span class="fa-stack fa-lg">
+          <i class="fa fa-circle fa-stack-2x"></i>
+          <i class="fa-text fa-stack-1x fa-inverse">知</i>
+        </span>
+      </a>
+    <% } %>
+    <% if (theme.about.douban_link) { %>
+      <a class="social-link-icon-douban" href="<%- theme.about.douban_link %>" target="_blank">
+        <span class="fa-stack fa-lg">
+          <i class="fa fa-circle fa-stack-2x"></i>
+          <i class="fa-text fa-stack-1x fa-inverse">豆</i>
+        </span>
+      </a>
+    <% } %>
+  </section>
+</div>
+
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><%- page.content %></section>
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  <% if (theme.catalog) { %>
+    <%- partial('_partial/catalog') %>
+  <% } %>
+  <!-- Catalog END -->
+  <%- partial('_partial/comments') %>
+</main>
+
+<script>
+  (function() {
+    $('.header').removeClass('fixed-header');
+  })();
+</script>
