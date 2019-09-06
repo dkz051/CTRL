@@ -56,7 +56,7 @@ class WikiSpider(Spider):
             player['first_name'] = namelist[0]
             player['last_name'] = namelist[1] if len(namelist) >= 2 else ''
 
-            player['full_name'] = name.replace('-', '·')
+            player['full_name'] = name
             player['team'] = Team.objects.get(short_name = team['short_name'])
             yield player
 

@@ -2,11 +2,12 @@
 
 from scrapy import Request
 from scrapy.spiders import Spider
-from bot.items import BotItem
+from bot.items import BotItem, RelationItem
+from database.models import Team, Player
 from urllib.parse import urljoin
 
-import time
-import datetime
+import time, datetime, re
+import logging
 
 class BotSpider(Spider):
     name = "bot"
@@ -32,12 +33,29 @@ class BotSpider(Spider):
         item['title'] = response.css('h1.headline::text').extract()[0].strip()
         item['source'] = response.css('span.comeFrom a').extract()[0].strip()
         item['published'] = response.css('span#pubtime_baidu::text').extract()[0].strip()
-        item['content'] = '<p>' + '</p><p>'.join(response.css('div.artical-main-content p::text').extract()) + '</p>'
-
         images = response.css('div.artical-importantPic img::attr(src)').extract()
         if len(images) == 0:
             item['image'] = ''
         else:
             item['image'] = response.css('div.artical-importantPic img::attr(src)').extract()[0]
 
+        content_raw = response.css('div.artical-main-content p::text').extract()
+
+        content_display = '<p>' + '</p><p>'.join(content_raw) + '</p>'
+
+        # for teams in Team.objects.all():
+        #     content_display = content_display.replace(teams.short_name, '<a href="/team/{0}/">{1}</a>'.format(teams.id, teams.short_name))
+        #     for player in Player.objects.filter(team = teams):
+        #         content_display = content_display.replace(player.first_name, '<a href="/team/{0}/">{1}</a>'.format(teams.id, player.first_name))
+        #         content_display = content_display.replace(player.last_name, '<a href="/team/{0}/">{1}</a>'.format(teams.id, player.last_name))
+
+        item['content_raw'] = content_raw
+        item['content_display'] = content_display
         yield item
+
+        # for teams in Team.objects.all():
+        #     relation = RelationItem()
+        #     relation['team'] = team
+        #     relation['news'] = item
+        #     if content_display.find(team.id) != -1:
+        #         yield relation
