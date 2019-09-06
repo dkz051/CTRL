@@ -7,7 +7,7 @@
 
 - [x] Basic info of teams
 - [ ] Related news (of a specific team)
-- [ ] Trending teams
+- [x] Trending teams
 
 - [x] News details page
 - [ ] Keyword search

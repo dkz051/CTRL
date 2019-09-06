@@ -40,22 +40,21 @@ class BotSpider(Spider):
             item['image'] = response.css('div.artical-importantPic img::attr(src)').extract()[0]
 
         content_raw = response.css('div.artical-main-content p::text').extract()
-
         content_display = '<p>' + '</p><p>'.join(content_raw) + '</p>'
 
-        # for teams in Team.objects.all():
-        #     content_display = content_display.replace(teams.short_name, '<a href="/team/{0}/">{1}</a>'.format(teams.id, teams.short_name))
-        #     for player in Player.objects.filter(team = teams):
-        #         content_display = content_display.replace(player.first_name, '<a href="/team/{0}/">{1}</a>'.format(teams.id, player.first_name))
-        #         content_display = content_display.replace(player.last_name, '<a href="/team/{0}/">{1}</a>'.format(teams.id, player.last_name))
+        content_raw = ''.join(content_raw)
+
+        for teams in Team.objects.all():
+            if content_raw.find(teams.short_name) != -1:
+                teams.news_count += 1
+                teams.save()
+                continue
+            for player in Player.objects.filter(team_id = teams.id):
+                if content_raw.find(player.first_name) != -1 or content_raw.find(player.last_name) != -1 or content_raw.find(player.full_name) != -1:
+                    teams.news_count += 1
+                    teams.save()
+                    break
 
         item['content_raw'] = content_raw
         item['content_display'] = content_display
         yield item
-
-        # for teams in Team.objects.all():
-        #     relation = RelationItem()
-        #     relation['team'] = team
-        #     relation['news'] = item
-        #     if content_display.find(team.id) != -1:
-        #         yield relation

@@ -1,0 +1,38 @@
+{% load staticfiles %}
+{% include 'head.html' %}
+{% include 'header.html' %}
+		<main class="app-body flex-box">
+			<div class="cards">
+				{% for entry in news %}
+				<article class="article-card">
+					<h2 class="article-head">
+						<a href="/news/{{ entry.id }}/">{{ entry.title }}</a>
+					</h2>
+					<p class="article-date">{{ entry.published | date:"Y年n月j日 G:i:s" }} {{ entry.source | safe }}</p>
+					<div class="article-summary">
+						<p>{{ entry.excerpt }}</p>
+					</div>
+					<a class="more" href="/news/{{ entry.id }}/">继续阅读</a>
+				</article>
+				{% endfor %}
+				{% include 'pagination.html' %}
+			</div>
+			<aside class="catalog-container">
+				<div class="toc-main">
+					<strong class="toc-title">球队热度榜</strong>
+					<table align="center" class="table-trending">
+						<tr>
+							<th>球队</th>
+							<th>热度</th>
+						</tr>
+						{% for team in trend %}
+						<tr>
+							<td><a href="/team/{{ team.id }}/">{{ team.name }}</a></td>
+							<td>{{ team.count }}</td>
+						</tr>
+						{% endfor %}
+					</table>
+				</div>
+			</aside>
+		</main>
+{% include 'footer.html' %}

@@ -3,10 +3,7 @@
   var app = $('.app-body')
   var header = $('.header')
   var banner = document.getElementById('article-banner') || false
-  var about = document.getElementById('about-banner') || false
   var top = $('.scroll-top')
-  var catalog = $('.catalog-container .toc-main')
-  var isOpen = false
 
   $(document).ready(function () {
     NProgress.start()
@@ -22,9 +19,11 @@
     if (banner) {
       app.css('transition-delay', '0.15s')
       $('#article-banner').children().css(fade)
+    } else {
+      header.addClass('fixed-header')
     }
-    if (about) {
-      $('.author').children().css(fade)
+    if ((document.documentElement.scrollTop || document.body.scrollTop) > 0) {
+      header.addClass('header-border')
     }
     app.css(fade)
   })
@@ -35,27 +34,17 @@
     }, 200)
   }
 
-  $('.menu').on('click', function () {
+  $('.item-icon-link').on('click', function() {
+    $('.search-box').fadeToggle()
+  })
+
+  /*$('.menu').on('click', function () {
     if (!header.hasClass('fixed-header') || isOpen) {
       header.toggleClass('fixed-header')
       isOpen = !isOpen
     }
     $('.menu-mask').toggleClass('open')
-  })
-
-  $('#tag-cloud a').on('click', function () {
-    var list = $('.tag-list')
-    var name = $(this).data('name')
-    var maoH = list.find('#' + name).offset().top
-
-    $('html,body').animate({
-      scrollTop: maoH - header.height()
-    }, 500)
-  })
-
-  $('.reward-btn').on('click', function () {
-    $('.money-code').fadeToggle()
-  })
+  })*/
 
   $('.arrow-down').on('click', function () {
     $('html, body').animate({
@@ -82,29 +71,16 @@
   document.addEventListener('scroll', function () {
     var scrollTop = document.documentElement.scrollTop || document.body.scrollTop
     if (scrollTop > 0) {
-      if (banner || about) header.addClass('fixed-header')
+      if (banner) header.addClass('fixed-header')
       header.addClass('header-border')
     } else if (scrollTop === 0) {
-      if (banner || about) header.removeClass('fixed-header')
+      if (banner) header.removeClass('fixed-header')
       header.removeClass('header-border')
     }
     if (scrollTop > 100) {
       top.addClass('opacity')
     } else {
       top.removeClass('opacity')
-    }
-    if (banner) {
-      if (scrollTop > $('#article-banner').outerHeight() - header.outerHeight()) {
-        catalog.addClass('fixed-toc')
-      } else {
-        catalog.removeClass('fixed-toc')
-      }
-    } else if (about) {
-      if (scrollTop > $('.author').offset().top + $('.author').outerHeight() - header.outerHeight()) {
-        catalog.addClass('fixed-toc')
-      } else {
-        catalog.removeClass('fixed-toc')
-      }
     }
   })
 })(jQuery)

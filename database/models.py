@@ -19,6 +19,7 @@ class Team(models.Model):
     joined = models.CharField(max_length = 255)
     area = models.CharField(max_length = 255)
     arena = models.CharField(max_length = 255)
+    news_count = models.BigIntegerField(default = 0)
     class Meta:
         app_label = 'database'
         db_table = 'teams'

@@ -21,4 +21,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     re_path(r'^news/(.+)/', views.news),
     re_path(r'^team/(.+)/', views.team),
+    path('', views.index),
+    re_path(r'^page/(.+)/', views.index),
 ]

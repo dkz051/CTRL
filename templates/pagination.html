@@ -1,0 +1,21 @@
+				<div class="guide-pager">
+				{% ifnotequal page_interval_first 1 %}
+					<a href="/"><span class="page-arrow">&Lt;</span></a>
+				{% endifnotequal %}
+				{% if page > 1 %}
+					<a href="/page/{{ page|add:-1 }}/"><span class="page-arrow">&lt;</span></a>
+				{% endif %}
+				{% for id in page_interval %}
+					{% ifequal id page %}
+					{{ id }}
+					{% else %}
+					<a href="/page/{{ id }}/">{{ id }}</a>
+					{% endifequal %}
+				{% endfor %}
+				{% if page < pages %}
+					<a href="/page/{{ page|add:1 }}/"><span class="page-arrow">&gt;</span></a>
+				{% endif %}
+				{% ifnotequal page_interval_last pages %}
+					<a href="/page/{{ pages }}/"><span class="page-arrow">&Gt;</span></a>
+				{% endifnotequal %}
+				</div>

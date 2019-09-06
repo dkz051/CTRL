@@ -1,53 +1,20 @@
 {% load staticfiles %}
 {% include 'head.html' %}
+{% include 'header.html' %}
 		<div id="article-banner">
 			<h2>{{ title }}</h2>
 			<p class="post-date">{{ published_time | date:"Y年n月j日 G:i:s" }}</p>
 			<div class="arrow-down"><a href="javascript:;"></a></div>
 		</div>
 		<main class="app-body flex-box">
-			<!-- Article START -->
 			<article class="post-article">
 				<section class="news-entry">
 					<img src="{{ image_url }}"></img>
 					{{ content | safe }}
 				</section>
-				<!-- Tags START -->
-				<!--div class="tags">
-					<span>标签：</span>
-					<a href="/tags#PHP"><span class="tag-code">PHP</span></a>
-					<a href="/tags#VPS"><span class="tag-code">VPS</span></a>
-					<a href="/tags#Isso"><span class="tag-code">Isso</span></a>
-				</div-->
-				<!-- Tags END -->
-				<!-- NAV START -->
 				<div class="nav-container">
 					来源：{{ source | safe }}
-					<!-- reverse left and right to put prev and next in a more logic postition -->
-					<!--a class="nav-left" href="/posts/remove-file-preview-web-learning-2018/">
-						<span class="nav-arrow">← </span>
-						屏蔽网络学堂文件预览
-					</a-->
 				</div>
-				<!-- NAV END -->
 			</article>
-			<!-- Article END -->
-			<!-- Catalog START -->
-			<aside class="catalog-container">
-				<div class="toc-main">
-					<!--strong class="toc-title">目录</strong>
-					<ol class="toc-nav">
-						<li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#部署-VPS"><span
-									class="toc-nav-text">部署 VPS</span></a></li>
-						<li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Apache-配置"><span
-									class="toc-nav-text">Apache 配置</span></a></li>
-						<li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#SSL-证书"><span
-									class="toc-nav-text">SSL 证书</span></a></li>
-						<li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Isso-评论系统配置"><span
-									class="toc-nav-text">Isso 评论系统配置</span></a></li>
-					</ol-->
-				</div>
-			</aside>
-			<!-- Catalog END -->
 		</main>
-		{% include 'footer.html' %}
+{% include 'footer.html' %}
