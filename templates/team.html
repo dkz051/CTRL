@@ -6,56 +6,36 @@
 			<div class="arrow-down"><a href="javascript:;"></a></div>
 		</div>
 		<main class="app-body flex-box">
-			<!-- Article START -->
-			<article class="post-article">
-				<section class="news-entry">
-					<h2>基本资料</h2>
-					<p><strong>加入 NBA</strong>：{{ joined }}</p>
-					<p><strong>赛区</strong>：{{ area }}</p>
-					<p><strong>主场</strong>：{{ arena }}</p>
-					<h2>球员</h2>
-					<ul>
+			<div class="cards">
+				{% for entry in news %}
+				<article class="article-card">
+					<h2 class="article-head">
+						<a href="/news/{{ entry.id }}/">{{ entry.title }}</a>
+					</h2>
+					<p class="article-date">{{ entry.published | date:"Y年n月j日 G:i:s" }}</p>
+					<div class="article-summary">
+						<p>{{ entry.excerpt }}</p>
+					</div>
+					<a class="more" href="/news/{{ entry.id }}/">继续阅读</a>
+				</article>
+				{% endfor %}
+				{% include 'pagination.html' %}
+			</div>
+			<aside class="catalog-container">
+				<div class="toc-main">
+					<strong class="toc-title">基本资料</strong>
+					<ul class="toc-nav">
+						<li><strong>加入 NBA</strong>：{{ joined }}</li>
+						<li><strong>赛区</strong>：{{ area }}</li>
+						<li><strong>主场</strong>：{{ arena }}</li>
+					</ul>
+					<strong class="toc-title">球员列表</strong>
+					<ul class="toc-nav">
 						{% for player in players %}
 						<li>{{ player.full_name }}</li>
 						{% endfor %}
 					</ul>
-					<h2>动态</h2>
-				</section>
-				<!-- Tags START -->
-				<!--div class="tags">
-					<span>标签：</span>
-					<a href="/tags#PHP"><span class="tag-code">PHP</span></a>
-					<a href="/tags#VPS"><span class="tag-code">VPS</span></a>
-					<a href="/tags#Isso"><span class="tag-code">Isso</span></a>
-				</div-->
-				<!-- Tags END -->
-				<!-- NAV START -->
-				<!--div class="nav-container"-->
-					<!-- reverse left and right to put prev and next in a more logic postition -->
-					<!--a class="nav-left" href="/posts/remove-file-preview-web-learning-2018/">
-						<span class="nav-arrow">← </span>
-						屏蔽网络学堂文件预览
-					</a-->
-				<!--/div-->
-				<!-- NAV END -->
-			</article>
-			<!-- Article END -->
-			<!-- Catalog START -->
-			<aside class="catalog-container">
-				<div class="toc-main">
-					<!--strong class="toc-title">目录</strong>
-					<ol class="toc-nav">
-						<li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#部署-VPS"><span
-									class="toc-nav-text">部署 VPS</span></a></li>
-						<li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Apache-配置"><span
-									class="toc-nav-text">Apache 配置</span></a></li>
-						<li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#SSL-证书"><span
-									class="toc-nav-text">SSL 证书</span></a></li>
-						<li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Isso-评论系统配置"><span
-									class="toc-nav-text">Isso 评论系统配置</span></a></li>
-					</ol-->
 				</div>
 			</aside>
-			<!-- Catalog END -->
 		</main>
 {% include 'footer.html' %}

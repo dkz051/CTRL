@@ -54,7 +54,7 @@ class WikiSpider(Spider):
             namelist = re.split('-| ', name)
 
             player['first_name'] = namelist[0]
-            player['last_name'] = namelist[1] if len(namelist) >= 2 else ''
+            player['last_name'] = namelist[-1]
 
             player['full_name'] = name
             player['team'] = Team.objects.get(short_name = team['short_name'])

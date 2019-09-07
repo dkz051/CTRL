@@ -6,7 +6,7 @@
 - [x] Teams & players crawler
 
 - [x] Basic info of teams
-- [ ] Related news (of a specific team)
+- [x] Related news (of a specific team)
 - [x] Trending teams
 
 - [x] News details page

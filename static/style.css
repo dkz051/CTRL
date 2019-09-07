@@ -359,10 +359,6 @@ canvas {
 .fixed-header .item-icon-link {
   color: #34495e;
 }
-.fixed-header .search-box {
-  background-color: #ccc;
-  color: #222;
-}
 .fixed-header-spacer {
   height: 60px;
 }
@@ -437,9 +433,14 @@ canvas {
   max-width: 200px;
   border-radius: 5em;
   display: none;
+  color: #222;
 }
 .search-box:focus {
   outline: none;
+}
+.fixed-header .search-box {
+  background-color: #98d9b5;
+  color: #222;
 }
 .active {
   border-bottom: 3px solid #42b983;
@@ -1055,6 +1056,18 @@ canvas {
   top: 2px;
   background: url("images/catalog.png") no-repeat;
   background-size: contain;
+}
+.catalog-container .toc-main .toc-nav {
+  padding: 0;
+  margin: 1em 0;
+  max-height: 480px;
+}
+.catalog-container .toc-main ol, .catalog-container .toc-main ul {
+  padding-left: 20px;
+}
+.catalog-container .toc-main li {
+  list-style-type: none;
+  line-height: 1.5;
 }
 .nav-container {
   width: 100%;
