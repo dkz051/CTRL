@@ -1,7 +1,10 @@
 from django.shortcuts import render
 from database.models import News, Team, Player, Relation
 from django.http import Http404, HttpResponse, HttpResponseNotFound
+from django.views.decorators.csrf import csrf_protect
 from math import *
+
+import jieba
 
 PAGINATION = 10
 EXCERPT = 200
@@ -79,7 +82,7 @@ def team(request, team_id, page_id = 1):
 		newss.append(news)
 	team['news'] = newss
 
-	team['page_title'] = '' if page_id == 1 else '第 {0} 页 | '.format(page_id) + teams[0].full_name + " | CTRL"
+	team['page_title'] = ('' if page_id == 1 else '第 {0} 页 | '.format(page_id)) + teams[0].full_name + " | CTRL"
 	team['page'] = page_id
 	team['pages'] = pages
 	team['page_interval_first'] = max(1, page_id - 5)
@@ -127,3 +130,8 @@ def index(request, page_id = 1):
 
 	data['pagination_prefix'] = '/page/'
 	return render(request, 'index.html', data)
+
+@csrf_protect
+def search(request, keyword, page_id = 1):
+	keywords = jieba.analyse.tfidf(keyword)
+	return render(request, 'search.html')

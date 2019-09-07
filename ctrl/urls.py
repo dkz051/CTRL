@@ -24,4 +24,6 @@ urlpatterns = [
     path('news/<int:news_id>/', views.news),
     path('team/<int:team_id>/', views.team),
     path('team/<int:team_id>/page/<page_id>/', views.team),
+    path('search/<keyword>/', views.search),
+    path('search/<keyword>/page/<page_id>/', views.search),
 ]

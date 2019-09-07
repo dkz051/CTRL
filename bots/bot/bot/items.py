@@ -7,10 +7,13 @@
 
 import scrapy
 from scrapy_djangoitem import DjangoItem
-from database.models import News, Relation
+from database.models import News, Relation, Word
 
 class BotItem(DjangoItem):
     django_model = News
 
 class RelationItem(DjangoItem):
     django_model = Relation
+
+class WordItem(DjangoItem):
+    django_model = Word

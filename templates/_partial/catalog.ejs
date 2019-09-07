@@ -1,8 +1,0 @@
-<% if (toc(page.content) !== ""){ %>
-  <aside class="catalog-container">
-    <div class="toc-main">
-      <strong class="toc-title"><%= __('toc.catalog') %></strong>
-        <%- toc(page.content, { "class": "toc-nav", "list_number": false }) %>
-    </div>
-  </aside>
-<% } %>

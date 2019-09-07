@@ -9,6 +9,7 @@ class News(models.Model):
     content_raw = models.TextField()
     content_display = models.TextField()
     url = models.URLField()
+    word_count = models.IntegerField()
     class Meta:
         app_label = 'database'
         db_table = 'news'
@@ -38,4 +39,13 @@ class Relation(models.Model):
     team = models.ForeignKey('Team', on_delete = models.CASCADE)
     class Meta:
         app_label = 'database'
-        db_table = 'relation'
+        db_table = 'relations'
+
+class Word(models.Model):
+    word = models.CharField(max_length = 63, unique = True)
+    count = models.IntegerField() # Total count of occurrences of the keyword
+    hit = models.IntegerField() # Number of articles containing the keyword
+    indices = models.TextField()
+    class Meta:
+        app_label = 'database'
+        db_table = 'words'

@@ -83,4 +83,11 @@
       top.removeClass('opacity')
     }
   })
+
+  $("#searchform").submit(function() {
+    var newUrl = '/search/' + $("#search-box")[0].value + '/';
+    $("#searchform").attr('action', newUrl);
+    $("#searchform").submit();
+  })
 })(jQuery)
+

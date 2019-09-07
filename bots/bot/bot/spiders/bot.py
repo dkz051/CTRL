@@ -2,14 +2,17 @@
 
 from scrapy import Request
 from scrapy.spiders import Spider
-from bot.items import BotItem, RelationItem
-from database.models import Team, Player, News, Relation
+from bot.items import BotItem, RelationItem, WordItem
+from database.models import Team, Player, News, Relation, Word
 from urllib.parse import urljoin
+from collections import Counter
+
+import jieba
 
 import time, datetime, re
 import logging
 
-MAX_CRAWL = 40
+MAX_CRAWL = 150
 
 class BotSpider(Spider):
     name = "bot"
@@ -54,6 +57,9 @@ class BotSpider(Spider):
 
         item['content_raw'] = content_raw
         item['content_display'] = content_display
+
+        item['word_count'] = sum(1 for _ in jieba.cut(re.sub(r'\W', ' ', item['title'] + content_raw)))
+
         yield item
 
         for teams in Team.objects.all():
@@ -70,3 +76,23 @@ class BotSpider(Spider):
                     relation['news'] = News.objects.get(url = item['url'])
                     yield relation
                     break
+
+        news_id = News.objects.filter(url = item['url'])[0].id
+        words = Counter(jieba.cut_for_search(re.sub(r'\W', ' ', item['title'] + content_raw)))
+
+        for word, count in words.items():
+            # count = words.count(word)
+            record = Word.objects.filter(word = word)
+            if record.count() == 0:
+                witem = WordItem()
+                witem['word'] = word
+                witem['count'] = count
+                witem['hit'] = 1
+                witem['indices'] = "{0},{1}".format(news_id, count)
+                yield witem
+            else:
+                rec = record[0]
+                rec.count += count
+                rec.hit += 1
+                rec.indices += "|{0},{1}".format(news_id, count)
+                rec.save()
