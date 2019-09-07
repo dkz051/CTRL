@@ -4,20 +4,20 @@
 					<a href="{{ pagination_prefix }}"><span class="page-arrow">&Lt;</span></a>
 					{% endifnotequal %}
 					{% if page > 1 %}
-					<a href="{{ pagination_prefix }}{{ page|add:-1 }}/"><span class="page-arrow">&lt;</span></a>
+					<a href="{{ pagination_prefix }}page/{{ page|add:-1 }}/"><span class="page-arrow">&lt;</span></a>
 					{% endif %}
 					{% for id in page_interval %}
 					{% ifequal id page %}
 					{{ id }}
 					{% else %}
-					<a href="{{ pagination_prefix }}{{ id }}/">{{ id }}</a>
+					<a href="{{ pagination_prefix }}page/{{ id }}/">{{ id }}</a>
 					{% endifequal %}
 					{% endfor %}
 					{% if page < pages %}
-					<a href="{{ pagination_prefix }}{{ page|add:1 }}/"><span class="page-arrow">&gt;</span></a>
+					<a href="{{ pagination_prefix }}page/{{ page|add:1 }}/"><span class="page-arrow">&gt;</span></a>
 					{% endif %}
 					{% ifnotequal page_interval_last pages %}
-					<a href="{{ pagination_prefix }}{{ pages }}/"><span class="page-arrow">&Gt;</span></a>
+					<a href="{{ pagination_prefix }}page/{{ pages }}/"><span class="page-arrow">&Gt;</span></a>
 					{% endifnotequal %}
 					{% endifnotequal %}
 				</div>

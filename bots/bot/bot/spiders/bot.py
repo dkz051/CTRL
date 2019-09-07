@@ -12,7 +12,7 @@ import jieba
 import time, datetime, re
 import logging
 
-MAX_CRAWL = 150
+MAX_CRAWL = 6000
 
 class BotSpider(Spider):
     name = "bot"
@@ -87,12 +87,10 @@ class BotSpider(Spider):
                 witem = WordItem()
                 witem['word'] = word
                 witem['count'] = count
-                witem['hit'] = 1
                 witem['indices'] = "{0},{1}".format(news_id, count)
                 yield witem
             else:
                 rec = record[0]
                 rec.count += count
-                rec.hit += 1
                 rec.indices += "|{0},{1}".format(news_id, count)
                 rec.save()

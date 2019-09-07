@@ -1,10 +1,13 @@
 from django.shortcuts import render
-from database.models import News, Team, Player, Relation
+from database.models import News, Team, Player, Relation, Word
 from django.http import Http404, HttpResponse, HttpResponseNotFound
 from django.views.decorators.csrf import csrf_protect
 from math import *
 
 import jieba
+import jieba.analyse
+
+import datetime
 
 PAGINATION = 10
 EXCERPT = 200
@@ -17,7 +20,7 @@ def news(request, news_id):
 		return HttpResponseNotFound("The article specified does not exist")
 
 	article = {}
-	article['page_title'] = articles[0].title + " | CTRL"
+	article['page_title'] = articles[0].title + " | NBA 新闻聚合"
 	article['title'] = articles[0].title
 	article['source'] = articles[0].source
 	article['image_url'] = articles[0].image
@@ -82,18 +85,20 @@ def team(request, team_id, page_id = 1):
 		newss.append(news)
 	team['news'] = newss
 
-	team['page_title'] = ('' if page_id == 1 else '第 {0} 页 | '.format(page_id)) + teams[0].full_name + " | CTRL"
+	team['page_title'] = ('' if page_id == 1 else '第 {0} 页 | '.format(page_id)) + teams[0].full_name + " | NBA 新闻聚合"
 	team['page'] = page_id
 	team['pages'] = pages
 	team['page_interval_first'] = max(1, page_id - 5)
 	team['page_interval_last'] = min(pages, page_id + 5)
 	team['page_interval'] = range(max(1, page_id - 5), min(pages + 1, page_id + 6))
 
-	team['pagination_prefix'] = '/team/{0}/page/'.format(team_id)
+	team['pagination_prefix'] = '/team/{0}/'.format(team_id)
 
 	return render(request, 'team.html', team)
 
 def index(request, page_id = 1):
+	start_time = datetime.datetime.now()
+
 	teams = []
 	for team in Team.objects.all():
 		newt = {}
@@ -107,7 +112,10 @@ def index(request, page_id = 1):
 	data['trend'] = teams
 
 	newss = []
-	pages = ceil(News.objects.count() / PAGINATION)
+
+	news_count_total = News.objects.count()
+	data['news_count'] = news_count_total
+	pages = ceil(news_count_total / PAGINATION)
 
 	if page_id <= 0 or page_id > pages:
 		return HttpResponseNotFound("The page requested does not exist.")
@@ -121,17 +129,100 @@ def index(request, page_id = 1):
 		newss.append(new)
 	data['news'] = newss
 
-	data['page_title'] = 'CTRL' if page_id == 1 else '第 {0} 页 | CTRL'.format(page_id)
+	data['page_title'] = 'NBA 新闻聚合' if page_id == 1 else '第 {0} 页 | NBA 新闻聚合'.format(page_id)
 	data['page'] = page_id
 	data['pages'] = pages
 	data['page_interval_first'] = max(1, page_id - 5)
 	data['page_interval_last'] = min(pages, page_id + 5)
 	data['page_interval'] = range(max(1, page_id - 5), min(pages + 1, page_id + 6))
 
-	data['pagination_prefix'] = '/page/'
+	data['pagination_prefix'] = '/'
+
+	end_time = datetime.datetime.now()
+
+	data['loading_time'] = (end_time - start_time).microseconds / 1000000
+	data['url'] = request.path
+
 	return render(request, 'index.html', data)
 
 @csrf_protect
 def search(request, keyword, page_id = 1):
-	keywords = jieba.analyse.tfidf(keyword)
-	return render(request, 'search.html')
+	start_time = datetime.datetime.now()
+
+	keywords = jieba.analyse.extract_tags(keyword, withWeight = True) # Note: check if stop words appear in result
+	word_seg = []
+
+	news_list = {}
+	news_count = News.objects.count()
+	for word in keywords:
+		word_seg.append(word[0])
+		words = Word.objects.filter(word = word[0])
+		if words.count() != 0:
+			indices = words[0].indices.split('|')
+			indices_count = len(indices)
+			idf = log(news_count / (1 + indices_count))
+			for index in indices:
+				(news_id, count) = index.split(',')
+				news_id = int(news_id)
+				count = int(count)
+				tf = count / News.objects.get(id = news_id).word_count
+				if news_id not in news_list:
+					news_list[news_id] = tf * idf * word[1]
+				else:
+					news_list[news_id] += tf * idf * word[1]
+	news_list = sorted(news_list.items(), key = lambda entry: (-entry[1], entry[0]))
+
+	end_time = datetime.datetime.now()
+
+	data = {}
+	data['search_count'] = len(news_list)
+	data['search_time'] = (end_time - start_time).microseconds / 1000000
+
+	data['search_word'] = keyword
+	data['search_seg'] = word_seg
+
+	newss = []
+	pages = ceil(len(news_list) / PAGINATION)
+
+	if pages == 0:
+		pages = 1
+		data['search_none'] = True
+	else:
+		data['search_none'] = False
+
+	if page_id <= 0 or page_id > pages:
+		return HttpResponseNotFound("The page requested does not exist.")
+
+	for entry in news_list[(page_id - 1) * PAGINATION : page_id * PAGINATION]:
+		new = {}
+		news = News.objects.get(id = entry[0])
+		new['id'] = news.id
+		new['published'] = news.published
+
+		excerpt = news.content_raw[0 : EXCERPT] + ('...' if EXCERPT < len(news.content_raw) else '')
+		title = news.title
+
+		for i in range(len(word_seg)):
+			excerpt = excerpt.replace(word_seg[i], '<span id={0}'.format(i))
+			title = title.replace(word_seg[i], '<span id={0}'.format(i))
+
+		for i in range(len(word_seg)):
+			excerpt = excerpt.replace('<span id={0}'.format(i), '<span class="key">{0}</span>'.format(word_seg[i]))
+			title = title.replace('<span id={0}'.format(i), '<span class="key">{0}</span>'.format(word_seg[i]))
+
+		new['excerpt'] = excerpt
+		new['title'] = title
+
+		newss.append(new)
+	data['news'] = newss
+
+	data['page_title'] = '搜索结果 | NBA 新闻聚合' if page_id == 1 else '第 {0} 页 | 搜索结果 | NBA 新闻聚合'.format(page_id)
+	data['page'] = page_id
+	data['pages'] = pages
+	data['page_interval_first'] = max(1, page_id - 5)
+	data['page_interval_last'] = min(pages, page_id + 5)
+	data['page_interval'] = range(max(1, page_id - 5), min(pages + 1, page_id + 6))
+
+	data['pagination_prefix'] = '/search/{0}/'.format(keyword)
+	data['url'] = request.path
+	return render(request, 'search.html', data)

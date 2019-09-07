@@ -44,7 +44,6 @@ class Relation(models.Model):
 class Word(models.Model):
     word = models.CharField(max_length = 63, unique = True)
     count = models.IntegerField() # Total count of occurrences of the keyword
-    hit = models.IntegerField() # Number of articles containing the keyword
     indices = models.TextField()
     class Meta:
         app_label = 'database'

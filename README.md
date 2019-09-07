@@ -10,10 +10,10 @@
 - [x] Trending teams
 
 - [x] News details page
-- [ ] Keyword search
+- [x] Keyword search
 
 - [x] Beautify pages with CSS/JS
-- [ ] Highlight keywords in search result page
+- [x] Highlight keywords in search result page
 
-- [ ] Advanced search
+- [x] Advanced search
 - [ ] Crawler + Django

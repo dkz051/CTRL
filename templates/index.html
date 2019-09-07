@@ -20,7 +20,7 @@
 			<aside class="catalog-container">
 				<div class="toc-main">
 					<strong class="toc-title">球队热度榜</strong>
-					<table align="center" class="table-trending">
+					<table class="table-trending">
 						<tr>
 							<th>球队</th>
 							<th>热度</th>
@@ -32,6 +32,11 @@
 						</tr>
 						{% endfor %}
 					</table>
+					<strong class="toc-title">站点统计</strong>
+					<ul class="toc-nav">
+						<li><strong>新闻总数</strong>：{{ news_count }}</li>
+						<li><strong>页面加载时间</strong>：{{ loading_time | floatformat:6 }} 秒</li>
+					</ul>
 				</div>
 			</aside>
 		</main>
