@@ -1,7 +1,7 @@
 from django.shortcuts import render
+from django.shortcuts import render_to_response
 from database.models import News, Team, Player, Relation, Word
 from django.http import Http404, HttpResponse, HttpResponseNotFound
-from django.views.decorators.csrf import csrf_protect
 from math import *
 
 import jieba
@@ -145,7 +145,6 @@ def index(request, page_id = 1):
 
 	return render(request, 'index.html', data)
 
-@csrf_protect
 def search(request, keyword, page_id = 1):
 	start_time = datetime.datetime.now()
 
@@ -226,3 +225,19 @@ def search(request, keyword, page_id = 1):
 	data['pagination_prefix'] = '/search/{0}/'.format(keyword)
 	data['url'] = request.path
 	return render(request, 'search.html', data)
+
+def page_not_found(request, exception):
+	# data['error_msg'] = exception
+	return render_to_response('404.html')
+
+def bot_admin(request):
+	data = {}
+	data['url'] = request.path
+	data['page_title'] = '爬虫管理后台 | NBA 新闻聚合'
+	return render(request, 'bot.html', data)
+
+def about(request):
+	data = {}
+	data['url'] = request.path
+	data['page_title'] = '关于「NBA 新闻聚合」'
+	return render(request, 'about.html', data)

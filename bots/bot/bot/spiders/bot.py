@@ -12,7 +12,7 @@ import jieba
 import time, datetime, re
 import logging
 
-MAX_CRAWL = 6000
+MAX_CRAWL = 1200
 
 class BotSpider(Spider):
     name = "bot"

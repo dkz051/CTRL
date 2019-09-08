@@ -15,7 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf.urls import handler404
+
 from database import views
+
+handler404 = "database.views.page_not_found"
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,4 +30,6 @@ urlpatterns = [
     path('team/<int:team_id>/page/<int:page_id>/', views.team),
     path('search/<keyword>/', views.search),
     path('search/<keyword>/page/<int:page_id>/', views.search),
+    path('bot/', views.bot_admin),
+    path('about/', views.about),
 ]

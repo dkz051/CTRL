@@ -6,7 +6,7 @@ html {
   height: 100%;
 }
 body {
-  font-family: 'Helvetica Neue', 'San Francisco', 'Segoe UI', Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  font-family: 'Helvetica Neue', 'San Francisco', 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: none;
@@ -340,11 +340,6 @@ h2.article-head {
 .page-arrow {
   color: #34495e;
 }
-.news-entry,
-.article-summary {
-  overflow-y: auto;
-  overflow-x: hidden;
-}
 .news-entry p,
 .article-summary p {
   text-indent: 2em;
@@ -442,6 +437,19 @@ h2.article-head {
   content: '';
   display: table;
   clear: both;
+}
+.bots {
+  margin: auto auto;
+}
+.admin-button {
+  width: 10em;
+  margin: 2em;
+  padding: 1em 2em;
+  text-align: center;
+  background-color: rgb(139, 89, 71);
+  color: white;
+  cursor: pointer;
+  display: inline-block;
 }
 @-moz-keyframes shine {
   0%, 100% {

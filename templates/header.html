@@ -5,14 +5,12 @@
 			</a>
 			<ul class="right-list">
 				<li class="list-item">
-					<form method="post" id="searchform" onsubmit="onSearchSubmit()">
-						{% csrf_token %}
-						<input id="search-box" class="search-box" type="text" name="keyword" required placeholder="搜索" />
+					<form id="search-form">
+						<input class="search-box" type="text" required placeholder="搜索" />
 					</form>
 				</li>
 				<li class="list-item"><i class="fa fa-search item-icon-link"></i></li>
 				<li class="list-item"><a href="/" class="item-link">主页</a></li>
-				<li class="list-item"><a href="/news/" class="item-link">动态</a></li>
 				<li class="list-item"><a href="/about/" class="item-link">关于</a></li>
 			</ul>
 		</div>

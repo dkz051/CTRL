@@ -16,4 +16,4 @@
 - [x] Highlight keywords in search result page
 
 - [x] Advanced search
-- [ ] Crawler + Django
+- [x] Crawler + Django

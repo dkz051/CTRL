@@ -1,0 +1,14 @@
+{% load staticfiles %}
+{% include 'head.html' %}
+{% include 'header.html' %}
+		<div id="article-banner">
+			<h2>404</h2>
+		</div>
+		<main class="app-body flex-box">
+			<div class="cards">
+				<article class="article-card">
+					<h2 class="article-head">{{ error_msg }}</h2>
+				</article>
+			</div>
+		</main>
+{% include 'footer.html' %}
