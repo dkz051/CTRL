@@ -23,7 +23,7 @@ body {
     font-size: 15px;
   }
 }
-input {
+input, button {
   font-family: 'Helvetica Neue', 'San Francisco', 'Segoe UI', Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif;
 }
 ol, ul, form, p {
@@ -298,20 +298,30 @@ h2.article-head {
 .item-icon-link:hover {
   cursor: pointer;
 }
-.search-box {
+#search-form {
+  display: none;
+}
+.search-box, .search-go {
   background-color: rgba(255, 255, 255, 1);
   border: none;
   padding: 5px 15px;
   width: auto;
   max-width: 200px;
-  border-radius: 5em;
-  display: none;
   color: #222;
 }
-.search-box:focus {
+.search-box {
+  border-radius: 5em 0 0 5em;
+  margin-right: 0;
+}
+.search-go {
+  border-radius: 0 5em 5em 0;
+  margin-left: 0;
+  cursor: pointer;
+}
+.search-box:focus, .search-go:focus {
   outline: none;
 }
-.fixed-header .search-box {
+.fixed-header .search-box, .fixed-header .search-go {
   background-color: #98d9b5;
   color: #222;
 }
@@ -450,6 +460,10 @@ h2.article-head {
   color: white;
   cursor: pointer;
   display: inline-block;
+}
+#return-main:hover {
+  border-bottom-width: 1px;
+  border-bottom-color: transparent;
 }
 @-moz-keyframes shine {
   0%, 100% {

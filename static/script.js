@@ -35,7 +35,7 @@
   }
 
   $('.item-icon-link').on('click', function() {
-    $('.search-box').fadeToggle()
+    $('#search-form').fadeToggle()
   })
 
   $('.arrow-down').on('click', function () {
@@ -71,23 +71,39 @@
   })
 
   $("#crawl-update").click(function() {
-    $.post("//localhost:6800/schedule.json", { project: "bot", spider: "bot" }, function() {
-      alert("成功添加爬虫任务")
-    });
+    $.get("//localhost:6800/listjobs.json", { project: "bot" }, function(jobs) {
+      if (jobs["running"].length <= 0 && jobs["pending"].length <= 0) {
+        $.post("//localhost:6800/schedule.json", { project: "bot", spider: "bot" }, function() {
+          alert("成功添加爬虫任务")
+        });
+      } else {
+        alert("当前已经在进行后台爬取了")
+      }
+    })
   })
 
   $("#crawl-cancel").click(function() {
     $.get("//localhost:6800/listjobs.json", { project: "bot" }, function(jobs) {
       running_jobs = jobs["running"]
-      if (running_jobs.length <= 0) {
+      pending_jobs = jobs["pending"]
+      if (running_jobs.length <= 0 && pending_jobs.length <= 0) {
         alert("当前没有运行任何爬虫任务")
       } else {
-        for (var i = 0; i < running_jobs.length; ++i) {
-          $.post("//localhost:6800/cancel.json", { project: "bot", job: running_jobs[i]["id"]}, function() {
+        if (running_jobs.length > 0) {
+          $.post("//localhost:6800/cancel.json", { project: "bot", job: running_jobs[0]["id"]}, function() {
+            alert("已取消正在运行的爬虫任务")
+          })
+        }
+        if (pending_jobs.length > 0) {
+          $.post("//localhost:6800/cancel.json", { project: "bot", job: pending_jobs[0]["id"]}, function() {
             alert("已取消正在运行的爬虫任务")
           })
         }
       }
     })
+  })
+
+  $("#return-back").click(function() {
+    window.history.go(-1)
   })
 })(jQuery)

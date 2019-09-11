@@ -14,8 +14,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from django.conf.urls import handler404
+from django.urls import path, re_path
+from django.conf.urls import handler404, url
+
+from django.conf import settings
+from django.views import static
 
 from database import views
 
@@ -32,4 +35,5 @@ urlpatterns = [
     path('search/<keyword>/page/<int:page_id>/', views.search),
     path('bot/', views.bot_admin),
     path('about/', views.about),
+    url(r'^static/(?P<path>.*)$', static.serve, {'document_root': settings.STATIC_ROOT}, name = 'static'),
 ]

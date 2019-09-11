@@ -3,6 +3,7 @@
 {% include 'header.html' %}
 		<main class="app-body flex-box">
 			<div class="cards">
+				{% if news_count %}
 				{% for entry in news %}
 				<article class="article-card">
 					<h2 class="article-head">
@@ -16,6 +17,12 @@
 				</article>
 				{% endfor %}
 				{% include 'pagination.html' %}
+				{% else %}
+				<article class="article-card">
+					<h2 class="article-head">噫，现在还没有新闻 _(:з」∠)_</h2>
+					<div class="article-summary"></div>
+				</article>
+				{% endif %}
 			</div>
 			<aside class="catalog-container">
 				<div class="toc-main">

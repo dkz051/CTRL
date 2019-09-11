@@ -3,6 +3,7 @@ astroid==2.2.5
 attrs==19.1.0
 Automat==0.6.0
 bandit==1.6.2
+bitarray==1.0.1
 blinker==1.4
 certifi==2018.1.18
 cffi==1.12.3
@@ -24,6 +25,7 @@ hyperlink==17.3.1
 idna==2.6
 incremental==16.10.1
 isort==4.3.21
+jieba==0.39
 Jinja2==2.10
 jsonpatch==1.16
 jsonpointer==1.10
@@ -35,6 +37,7 @@ lazy-object-proxy==1.4.2
 lxml==4.4.1
 MarkupSafe==1.0
 mccabe==0.6.1
+mysqlclient==1.4.4
 netifaces==0.10.4
 oauthlib==2.0.6
 olefile==0.45.1
@@ -44,6 +47,7 @@ pbr==5.4.3
 Pillow==5.1.0
 pyasn1==0.4.7
 pyasn1-modules==0.2.6
+pybloom-live==3.0.0
 pycparser==2.19
 pycrypto==2.6.1
 PyDispatcher==2.0.5
@@ -51,6 +55,7 @@ pygobject==3.26.1
 PyHamcrest==1.9.0
 PyJWT==1.5.3
 pylint==2.3.1
+PyMySQL==0.9.3
 pyOpenSSL==17.5.0
 pyserial==3.4
 python-apt==1.6.4

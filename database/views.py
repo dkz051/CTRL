@@ -7,17 +7,20 @@ from math import *
 import jieba
 import jieba.analyse
 
-import datetime
+import datetime, os
 
 PAGINATION = 10
 EXCERPT = 200
+
+DICT_FILE = 'dict.txt'
+jieba.load_userdict(os.path.join(os.path.dirname(os.path.abspath(__file__)), DICT_FILE))
 
 # Create your views here.
 def news(request, news_id):
 	articles = News.objects.filter(id = news_id)
 
 	if len(articles) == 0:
-		return HttpResponseNotFound("The article specified does not exist")
+		raise Http404()
 
 	article = {}
 	article['page_title'] = articles[0].title + " | NBA 新闻聚合"
@@ -56,7 +59,7 @@ def team(request, team_id, page_id = 1):
 	teams = Team.objects.filter(id = team_id)
 
 	if len(teams) == 0:
-		return HttpResponseNotFound("No such team")
+		raise Http404()
 
 	team = {}
 	team['full_name'] = teams[0].full_name
@@ -74,7 +77,7 @@ def team(request, team_id, page_id = 1):
 	pages = ceil(related_news.count() / PAGINATION)
 
 	if page_id <= 0 or page_id > pages:
-		return HttpResponseNotFound("The page requested does not exist.")
+		raise Http404()
 
 	for relation in related_news.order_by('-news__published')[(page_id - 1) * PAGINATION : page_id * PAGINATION]:
 		news = {}
@@ -117,8 +120,11 @@ def index(request, page_id = 1):
 	data['news_count'] = news_count_total
 	pages = ceil(news_count_total / PAGINATION)
 
+	if pages == 0:
+		pages = 1
+
 	if page_id <= 0 or page_id > pages:
-		return HttpResponseNotFound("The page requested does not exist.")
+		raise Http404()
 
 	for news in News.objects.all().order_by('-published')[(page_id - 1) * PAGINATION : page_id * PAGINATION]:
 		new = {}
@@ -148,7 +154,7 @@ def index(request, page_id = 1):
 def search(request, keyword, page_id = 1):
 	start_time = datetime.datetime.now()
 
-	keywords = jieba.analyse.extract_tags(keyword, withWeight = True) # Note: check if stop words appear in result
+	keywords = jieba.analyse.extract_tags(keyword, withWeight = True)
 	word_seg = []
 
 	news_list = {}
@@ -185,12 +191,9 @@ def search(request, keyword, page_id = 1):
 
 	if pages == 0:
 		pages = 1
-		data['search_none'] = True
-	else:
-		data['search_none'] = False
 
 	if page_id <= 0 or page_id > pages:
-		return HttpResponseNotFound("The page requested does not exist.")
+		raise Http404()
 
 	for entry in news_list[(page_id - 1) * PAGINATION : page_id * PAGINATION]:
 		new = {}
@@ -227,8 +230,9 @@ def search(request, keyword, page_id = 1):
 	return render(request, 'search.html', data)
 
 def page_not_found(request, exception):
-	# data['error_msg'] = exception
-	return render_to_response('404.html')
+	response = render_to_response('404.html')
+	response.status_code = 404
+	return response
 
 def bot_admin(request):
 	data = {}
