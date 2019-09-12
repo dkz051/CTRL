@@ -1,5 +1,6 @@
 credential.txt
 db.sqlite3
+ctrl.dump.sql
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
